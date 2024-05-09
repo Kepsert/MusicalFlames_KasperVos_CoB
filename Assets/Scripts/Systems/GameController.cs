@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
+    [SerializeField] bool _testRun = false;
+
     void Awake()
     {
         if (Instance == null)
@@ -20,6 +22,15 @@ public class GameController : MonoBehaviour
         else
         {
             DestroyImmediate(this);
+        }
+    }
+
+    void Start()
+    {
+        if (_testRun)
+        {
+            MessageHub.Publish(new NewGameMessage());
+            SetGameState(GameState.Play);
         }
     }
 

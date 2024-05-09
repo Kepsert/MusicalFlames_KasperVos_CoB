@@ -54,4 +54,21 @@ public class SequenceController : MonoBehaviour
             Debug.LogWarning("There is currently no existing sequencehelper, so no sequence items can be added.");
         }
     }
+
+    public void CompareInputWithSequence(int input)
+    {
+        if (_sequenceHelper.CheckSequenceInput(input))
+        {
+            Debug.Log("Correct Input");
+            if (_sequenceHelper.IsFinalSequenceInput())
+            {
+                Debug.Log("Sequence Ended");
+            }
+        }
+        else
+        {
+            Debug.Log("Incorrect Input");
+            _sequenceHelper.ResetSequence();
+        }
+    }
 }

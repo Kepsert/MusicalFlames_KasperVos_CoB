@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &369722589
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 369722590}
+  m_Layer: 0
+  m_Name: ---GAME---
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &369722590
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369722589}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,8 +384,9 @@ GameObject:
   - component: {fileID: 2027100516}
   - component: {fileID: 2027100515}
   - component: {fileID: 2027100517}
+  - component: {fileID: 2027100518}
   m_Layer: 0
-  m_Name: ---GAME---
+  m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,6 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4aa99361d112274094e6f2bf7bacbb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sequenceController: {fileID: 0}
 --- !u!4 &2027100516
 Transform:
   m_ObjectHideFlags: 0
@@ -417,6 +450,18 @@ MonoBehaviour:
   m_DefaultActionMap: SequenceMinigame
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2027100518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027100514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c29fe80d73d1142a42d504b9e88a46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2813898860995486298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -466,8 +511,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2103503222715898994, guid: 52e867cf1d41d9b45b7a0a3ce26aeaa1, type: 3}
-      propertyPath: <State>k__BackingField
-      value: 2
+      propertyPath: _testRun
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5057365905010792314, guid: 52e867cf1d41d9b45b7a0a3ce26aeaa1, type: 3}
       propertyPath: m_Name
@@ -484,5 +529,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
+  - {fileID: 369722590}
   - {fileID: 2027100516}
   - {fileID: 2813898860995486298}

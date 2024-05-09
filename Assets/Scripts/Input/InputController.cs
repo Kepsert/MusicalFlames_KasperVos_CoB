@@ -1,8 +1,5 @@
 using Messaging;
 using Messaging.Messages;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,26 +8,27 @@ public class InputController : MonoBehaviour
     PlayerInput _playerInput;
     InputAction _toggleCandleAction;
 
+    [SerializeField] SequenceController _sequenceController = null;
+
     bool _hasControl = false;
 
     void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
         if (_playerInput != null)
-        {
             _toggleCandleAction = _playerInput.currentActionMap.FindAction("ToggleCandle");
-        }
         else
-        {
             Debug.LogWarning("PlayerInput component missing on " + this.name);
-        }
+
+        if (_sequenceController == null)
+            _sequenceController = GetComponent<SequenceController>();
     }
 
     void Start()
     {
         MessageHub.Subscribe<GameStateChangedMessage>(this, GameStateChanged);
 
-        _toggleCandleAction.performed += ToggleCandleButtonPressed;
+        _toggleCandleAction.performed += ToggleCandleButtonPressed;        
     }
 
     void OnDestroy()
@@ -53,6 +51,7 @@ public class InputController : MonoBehaviour
         if (_hasControl)
         {
             int value = (int)obj.ReadValue<float>();
+            _sequenceController.CompareInputWithSequence(value);
         }
     }
 }

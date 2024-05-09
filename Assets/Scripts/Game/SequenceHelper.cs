@@ -35,6 +35,7 @@ public class SequenceHelper<T>
         {
             T sequenceItem = sequenceGeneratorAction();
             _sequenceList.Add(sequenceItem);
+            Debug.Log("Sequence item " + (Convert.ToInt32(i + 1)) + " value " + sequenceItem);
         }
         return _sequenceList;
     }
