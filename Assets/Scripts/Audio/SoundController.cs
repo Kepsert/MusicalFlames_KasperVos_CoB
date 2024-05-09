@@ -1,6 +1,5 @@
 using Messaging;
 using Messaging.Messages;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +10,7 @@ public class SoundController : MonoBehaviour
     public List<AudioClip> _soundClips = new List<AudioClip>();
     private Dictionary<string, AudioClip> _soundDictionary;
 
+    // Hard-code volume cause volume sliders are out of scope
     float _masterVolumeVariable = .5f;
     float _sfxVolumeVariable = .2f;
 

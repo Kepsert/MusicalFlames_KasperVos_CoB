@@ -57,6 +57,7 @@ public class SequenceController : MonoBehaviour
 
     void NewGameStarted(NewGameMessage obj)
     {
+        // If for whatever reason no SequenceGameSettings are sent, use default "Normal"
         if (obj.SequenceGameSettings != null)
             _gameSettings = obj.SequenceGameSettings;
 
@@ -83,6 +84,9 @@ public class SequenceController : MonoBehaviour
         _roundManager.SetSettings(_gameSettings, _endlessMode);
     }
 
+    /// <summary>
+    /// Generate a brand new sequence
+    /// </summary>
     void GenerateSequence()
     {
         _inputValueHelper = new InputValueHelper(_amountOfCandles);
@@ -93,6 +97,10 @@ public class SequenceController : MonoBehaviour
         ShowSequence();
     }
 
+    /// <summary>
+    /// Add extra items to the existing sequence
+    /// </summary>
+    /// <param name="amount"></param>
     void AddToSequence(int amount = 0)
     {
         if (_sequenceHelper != null)

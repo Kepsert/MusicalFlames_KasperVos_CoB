@@ -7,6 +7,8 @@ public class SoundtrackManager : MonoBehaviour
     public static SoundtrackManager Instance { get; private set; }
 
     [SerializeField] AudioClip[] _musicTracks;
+
+    // Hard-code volume cause volume sliders are out of scope
     float _masterVolume = .5f;
     float _musicVolume = .2f;
     [SerializeField] float _crossFadeDuration = 1.0f;

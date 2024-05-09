@@ -12,6 +12,11 @@ public class RoundManager : MonoBehaviour
 
     bool _endlessMode = false;
 
+    /// <summary>
+    /// Initiate the RoundManager
+    /// </summary>
+    /// <param name="gameSettings"></param>
+    /// <param name="endlessMode"></param>
     public void SetSettings(SequenceGameSettings gameSettings, bool endlessMode)
     {
         _gameSettings = gameSettings;
@@ -19,6 +24,10 @@ public class RoundManager : MonoBehaviour
         ResetGame();
     }
 
+    /// <summary>
+    /// Check to see if this is the final round in the minigame
+    /// </summary>
+    /// <returns></returns>
     public bool IsFinalRound()
     {
         if (_currentRound == _amountOfRounds)
@@ -31,7 +40,7 @@ public class RoundManager : MonoBehaviour
     {
         _currentRound++;
         if (_endlessMode)
-            MessageHub.Publish(new RoundEndedMessage());
+            MessageHub.Publish(new RoundEndedMessage(_currentRound-1));
     }
 
     /// <summary>

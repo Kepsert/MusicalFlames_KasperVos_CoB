@@ -59,12 +59,16 @@ public class RoundTimerUI : MonoBehaviour, IUpdateable<float>
         _slider.value = 1 - value;
     }
 
+    /// <summary>
+    /// Gradually fill the timer back up
+    /// </summary>
+    /// <param name="duration"></param>
     public void RefreshOverTime(float duration)
     {
-        _resetValueOverTime = StartCoroutine(ResetValueCoroutine(duration));
+        _resetValueOverTime = StartCoroutine(ResetValueOverTimeCoroutine(duration));
     }
 
-    IEnumerator ResetValueCoroutine(float duration)
+    IEnumerator ResetValueOverTimeCoroutine(float duration)
     {
         float timer = 0f;
         float startValue = _slider.value;

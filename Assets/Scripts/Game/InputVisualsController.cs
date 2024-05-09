@@ -27,6 +27,10 @@ public class InputVisualsController : MonoBehaviour, IVisualsToggable
         MessageHub.Unsubscribe<NewGameMessage>(this);
     }
 
+    /// <summary>
+    /// Either show or hide the visuals based on toggle
+    /// </summary>
+    /// <param name="toggle"></param>
     public void ToggleVisualObject(bool toggle)
     {
         StartCoroutine(AnimateInputVisualsToggle(toggle));
@@ -44,12 +48,19 @@ public class InputVisualsController : MonoBehaviour, IVisualsToggable
         }
         yield return new WaitForSeconds(_inputVisualsStepDuration * 1.25f);
 
+        // Only allow for user input once the keys have appeared on-screen completely
         if (toggle)
         {
             MessageHub.Publish(new ChangeGameStateMessage(GameState.Play));
         }
     }
 
+    /// <summary>
+    /// After x rounds, depending on difficulty, two input values will swap through this method
+    /// </summary>
+    /// <param name="amountOfCandles"></param>
+    /// <param name="inputValueHelper"></param>
+    /// <returns></returns>
     public float SwapInputVisuals(int amountOfCandles, InputValueHelper inputValueHelper)
     {
         List<int> indices = inputValueHelper.SwapTwoRandomValuesInList(1, amountOfCandles);
@@ -65,6 +76,11 @@ public class InputVisualsController : MonoBehaviour, IVisualsToggable
         return _inputVisualsStepDuration * 4;
     }
 
+    /// <summary>
+    /// Animation for the swapping input visuals
+    /// </summary>
+    /// <param name="visuals"></param>
+    /// <returns></returns>
     IEnumerator AnimateSwapVisuals(List<Transform> visuals)
     {
         // Move visuals down

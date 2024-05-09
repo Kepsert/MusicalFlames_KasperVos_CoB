@@ -1,6 +1,5 @@
 using Messaging;
 using Messaging.Messages;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +11,11 @@ public class CandleVisualsController : MonoBehaviour
     Coroutine _seperateCandleCoroutine;
     Coroutine _showSequenceCoroutine;
 
+    // The time it takes before showing the sequence
     const float _initialWaitTime = 1f;
+    // The time it takes between each sequence item
     const float _DelayTime = .5f;
+    // The time each sequence item will be active
     const float _candleLitUpTime = 0.3f;
 
     void Start()
@@ -26,6 +28,11 @@ public class CandleVisualsController : MonoBehaviour
         MessageHub.Unsubscribe<EndGameMessage>(this);
     }
 
+    /// <summary>
+    /// Show the entire sequence to the player
+    /// </summary>
+    /// <param name="sequence"></param>
+    /// <returns></returns>
     public float ShowSequence(List<int> sequence)
     {
         _showSequenceCoroutine = StartCoroutine(ShowSequenceCoroutine(sequence));
@@ -54,6 +61,11 @@ public class CandleVisualsController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Light up a single candle, such as when the player presses a key
+    /// </summary>
+    /// <param name="candleIndex"></param>
+    /// <returns></returns>
     public float ShowSeparateCandle(int candleIndex)
     {
         if (_seperateCandleCoroutine != null)

@@ -40,6 +40,7 @@ public class InputController : MonoBehaviour
 
     private void GameStateChanged(GameStateChangedMessage obj)
     {
+        // Player can only use input when the gamestate is set to Play
         if (obj.GameState == GameState.Play)
             _hasControl = true;
         else

@@ -1,6 +1,5 @@
 using Messaging;
 using Messaging.Messages;
-using System;
 using UnityEngine;
 
 public class RoundTimerController : MonoBehaviour
@@ -43,6 +42,10 @@ public class RoundTimerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When the game starts, set the starting values for the controller
+    /// </summary>
+    /// <param name="roundTime"></param>
     public void GameStarted(float roundTime)
     {
         _roundTime = roundTime;
@@ -55,7 +58,7 @@ public class RoundTimerController : MonoBehaviour
         _timerRunning = false;
         _roundTimer.Reset();
         if (_roundTimerUI != null)
-            _roundTimerUI.UpdateValue(0);
+            _roundTimerUI.RefreshOverTime(0.1f);
     }
 
     void GameStateChanged(GameStateChangedMessage obj)
@@ -70,6 +73,10 @@ public class RoundTimerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Use an event to inject required dependencies into this script
+    /// </summary>
+    /// <param name="obj"></param>
     private void InjectUIClass(InjectUIMessage obj)
     {
         if (obj.Object is IUpdateable<float> iUpdateable)

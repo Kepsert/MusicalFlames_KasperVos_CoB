@@ -2,9 +2,10 @@ namespace Messaging.Messages
 {
     public class RoundEndedMessage : MessageBase
     {
-        public RoundEndedMessage()
+        public int RoundNumber;
+        public RoundEndedMessage(int roundNumber = 0)
         {
-
+            RoundNumber = roundNumber;
         }
     }
 }
