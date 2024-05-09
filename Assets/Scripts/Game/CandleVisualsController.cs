@@ -11,7 +11,7 @@ public class CandleVisualsController : MonoBehaviour
     Coroutine _seperateCandleCoroutine;
 
     const float _initialWaitTime = 1f;
-    const float _DelayTime = .7f;
+    const float _DelayTime = .5f;
     const float _candleLitUpTime = 0.3f;
 
     public void ShowSequence(List<int> sequence)
