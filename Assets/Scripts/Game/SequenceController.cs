@@ -1,5 +1,7 @@
 using Messaging;
 using Messaging.Messages;
+using Misc;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +20,8 @@ public class SequenceController : MonoBehaviour
 
     int _sequenceLength = 3;
     int _sequenceIncrement = 1;
+
+    Guid _candleLitTimer;
 
     private void Awake()
     {
@@ -76,12 +80,16 @@ public class SequenceController : MonoBehaviour
 
     public void CompareInputWithSequence(int input)
     {
+        if (_candleLitTimer != null)
+            Timer.Instance.RemoveTimer(_candleLitTimer);
+
+        float candleLitUpTime = _candleVisualsController.ShowSeparateCandle(input);
+        
         if (_sequenceHelper.CheckSequenceInput(input))
         {
-            _candleVisualsController.ShowSeparateCandle(input);
-
             if (_sequenceHelper.IsFinalSequenceInput())
             {
+                MessageHub.Publish(new ChangeGameStateMessage(GameState.Cutscene));
                 if (_roundManager.IsFinalRound())
                 {
                     MessageHub.Publish(new ChangeGameStateMessage(GameState.Victory));
@@ -89,21 +97,28 @@ public class SequenceController : MonoBehaviour
                 }
                 else
                 {
-                    _roundManager.NextRound();
-                    ContinueSequence();
+                    // Wait for the candle to be unlit (after player input) before moving on to the next round
+                    _candleLitTimer = Timer.Instance.AddTimer(candleLitUpTime, () => NextSequenceStep());
                 }
             }
         }
         else
         {
-            _sequenceHelper.ResetSequence();
-            _candleVisualsController.ShowSequence(_currentSequence);
+            MessageHub.Publish(new ChangeGameStateMessage(GameState.Cutscene));
+            _candleLitTimer = Timer.Instance.AddTimer(candleLitUpTime, () => RestartCurrentSequence());
         }
     }
 
-    void ContinueSequence()
+    void NextSequenceStep()
     {
         AddToSequence();
+        _roundManager.NextRound();
+        _candleVisualsController.ShowSequence(_currentSequence);
+    }
+
+    void RestartCurrentSequence()
+    {
+        _sequenceHelper.ResetSequence();
         _candleVisualsController.ShowSequence(_currentSequence);
     }
 }

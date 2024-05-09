@@ -37,7 +37,7 @@ public class CandleVisualsController : MonoBehaviour
         MessageHub.Publish(new ChangeGameStateMessage(GameState.Play));
     }
 
-    public void ShowSeparateCandle(int candleIndex)
+    public float ShowSeparateCandle(int candleIndex)
     {
         if (_seperateCandleCoroutine != null)
             StopCoroutine(_seperateCandleCoroutine);
@@ -45,6 +45,8 @@ public class CandleVisualsController : MonoBehaviour
         ClearCandles();
 
         _seperateCandleCoroutine = StartCoroutine(ShowCandleCoroutine(_candleRenderers[candleIndex - 1]));
+
+        return _candleLitUpTime;
     }
 
     IEnumerator ShowCandleCoroutine(SpriteRenderer candle)
