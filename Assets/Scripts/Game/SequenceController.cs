@@ -8,6 +8,8 @@ public class SequenceController : MonoBehaviour
     [SerializeField] CandleVisualsController _candleVisualsController = null;
     [SerializeField] RoundManager _roundManager = null;
 
+    [SerializeField] SequenceGameSettings _gameSettings = null;
+
     SequenceHelper<int> _sequenceHelper;
 
     List<int> _currentSequence = new List<int>();
@@ -45,8 +47,11 @@ public class SequenceController : MonoBehaviour
 
     public void Init()
     {
-        _sequenceLength = 3;
-        _sequenceIncrement = 1;
+        _sequenceLength = _gameSettings.StartSequenceLength;
+        _sequenceIncrement = _gameSettings.SequenceIncrementPerRound;
+
+        // Set up RoundManager
+        _roundManager.SetSettings(_gameSettings);
     }
 
     void GenerateSequence()

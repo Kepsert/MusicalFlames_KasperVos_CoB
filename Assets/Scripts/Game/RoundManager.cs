@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class RoundManager : MonoBehaviour
 {
+    SequenceGameSettings _gameSettings = null;
+
     int _currentRound = 1;
     int _amountOfRounds = 3;
 
-    void Start()
+    public void SetSettings(SequenceGameSettings gameSettings)
     {
-        MessageHub.Subscribe<NewGameMessage>(this, NewGameStarted);
-    }
-
-    void OnDestroy()
-    {
-        MessageHub.Unsubscribe<NewGameMessage>(this);
+        _gameSettings = gameSettings;
+        ResetGame();
     }
 
     public bool IsFinalRound()
@@ -30,10 +28,9 @@ public class RoundManager : MonoBehaviour
         _currentRound++;
     }
 
-    void NewGameStarted(NewGameMessage obj)
+    void ResetGame()
     {
         _currentRound = 1;
-        _amountOfRounds = 3;
+        _amountOfRounds = _gameSettings.AmountOfRounds;
     }
-
 }
