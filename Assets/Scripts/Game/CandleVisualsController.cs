@@ -1,4 +1,5 @@
 using Messaging;
+using Messaging.Messages;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +21,7 @@ public class CandleVisualsController : MonoBehaviour
 
     IEnumerator ShowSequenceCoroutine(List<int> sequence)
     {
-        GameController.Instance.SetGameState(GameState.Cutscene);
+        MessageHub.Publish(new ChangeGameStateMessage(GameState.Cutscene));
         yield return new WaitForSeconds(_initialWaitTime);
         for (int i = 0; i < sequence.Count; i++)
         {
@@ -30,5 +31,7 @@ public class CandleVisualsController : MonoBehaviour
             _candleRenderers[candle].enabled = false;
             yield return new WaitForSeconds(_DelayTime);
         }
+
+        MessageHub.Publish(new ChangeGameStateMessage(GameState.Play));
     }
 }

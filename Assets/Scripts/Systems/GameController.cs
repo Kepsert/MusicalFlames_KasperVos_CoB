@@ -1,7 +1,5 @@
 using Messaging;
 using Messaging.Messages;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum GameState { Menu, Loading, Play, Cutscene, Victory, Loss }
@@ -9,30 +7,7 @@ public enum GameMode { Normal, Endless }
 
 public class GameController : MonoBehaviour
 {
-    public static GameController Instance;
-
     [SerializeField] bool _testRun = false;
-
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            DestroyImmediate(this);
-        }
-    }
-
-    void Start()
-    {
-        if (_testRun)
-        {
-            MessageHub.Publish(new NewGameMessage());
-            SetGameState(GameState.Play);
-        }
-    }
 
     [field: SerializeField] public GameState State { get; private set; } = GameState.Menu;
     public void SetGameState(GameState state)
@@ -46,5 +21,26 @@ public class GameController : MonoBehaviour
     {
         Mode = mode;
         MessageHub.Publish(new GameModeChangedMessage(Mode));
+    }
+
+    void Start()
+    {
+        MessageHub.Subscribe<ChangeGameStateMessage>(this, ChangeGameState);
+
+        if (_testRun)
+        {
+            MessageHub.Publish(new NewGameMessage());
+            SetGameState(GameState.Play);
+        }
+    }
+
+    void OnDestroy()
+    {
+        MessageHub.Unsubscribe<ChangeGameStateMessage>(this);
+    }
+
+    private void ChangeGameState(ChangeGameStateMessage obj)
+    {
+        SetGameState(obj.State);
     }
 }
