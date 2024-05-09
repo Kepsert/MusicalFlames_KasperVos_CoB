@@ -1,5 +1,7 @@
+using DG.Tweening;
 using Messaging;
 using Messaging.Messages;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,9 +15,14 @@ public class EndGameUIController : MonoBehaviour
     [SerializeField] Image _endGameImage = null;
     [SerializeField] Sprite[] _endGameSprites = null;
 
+    const float _animationDuration = 1.75f;
+    const float _moveDistance = 1750;
+
     void Start()
     {
         MessageHub.Subscribe<GameStateChangedMessage>(this, GameStateChanged);
+
+        _endGamePanel.transform.position += new Vector3(0, _moveDistance);
     }
 
     void OnDestroy()
@@ -33,6 +40,8 @@ public class EndGameUIController : MonoBehaviour
 
     void GameResults(bool win)
     {
+        StartCoroutine(AnimateTogglePanelCoroutine(true));
+
         _endGamePanel.SetActive(true);
         _endGameButton.interactable = true;
         if (win)
@@ -53,10 +62,26 @@ public class EndGameUIController : MonoBehaviour
 
     public void EndGameButtonPressed()
     {
+        StartCoroutine(AnimateTogglePanelCoroutine(false));
+
+        MessageHub.Publish(new PlaySFXMessage("Button"));
+
         _endGameButton.interactable = false;
 
-        _endGamePanel.SetActive(false);
         MessageHub.Publish(new GameStateChangedMessage(GameState.Loading));
         MessageHub.Publish(new NewGameMessage());
+    }
+
+    IEnumerator AnimateTogglePanelCoroutine(bool toggle)
+    {
+        Vector3 moveDistance = toggle ? new Vector3(0, -_moveDistance) : new Vector3(0, _moveDistance);
+        Vector3 endPosition = _endGamePanel.transform.position + moveDistance;
+        _endGamePanel.transform.DOMove(endPosition, _animationDuration).SetEase(Ease.OutBounce);
+        yield return new WaitForSeconds(_animationDuration);
+
+        if (!toggle)
+        {
+            _endGamePanel.SetActive(false);
+        }
     }
 }
