@@ -1,10 +1,15 @@
 using Messaging;
 using Messaging.Messages;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SequenceController : MonoBehaviour
 {
+    [SerializeField] CandleVisualsController _candleVisualsController = null;
+
     SequenceHelper<int> _sequenceHelper;
+
+    List<int> _currentSequence = new List<int>();
 
     const int _amountOfCandles = 5;
 
@@ -12,6 +17,12 @@ public class SequenceController : MonoBehaviour
     int _sequenceLength = 3;
     int _sequenceIncrement = 1;
     int _amountOfRounds = 4;
+
+    private void Awake()
+    {
+        if (_candleVisualsController == null)
+            _candleVisualsController = GetComponent<CandleVisualsController>();
+    }
 
     void Start()
     {
@@ -25,6 +36,8 @@ public class SequenceController : MonoBehaviour
 
     void NewGameStarted(NewGameMessage obj)
     {
+        _currentSequence.Clear();
+
         Init();
         GenerateSequence();
     }
@@ -40,7 +53,9 @@ public class SequenceController : MonoBehaviour
     void GenerateSequence()
     {
         _sequenceHelper = new SequenceHelper<int>(_sequenceLength, _sequenceIncrement);
-        _sequenceHelper.GenerateSequence(() => UnityEngine.Random.Range(1, _amountOfCandles + 1));
+        _currentSequence = _sequenceHelper.GenerateSequence(() => UnityEngine.Random.Range(1, _amountOfCandles + 1));
+
+        _candleVisualsController.ShowSequence(_currentSequence);
     }
 
     void AddToSequence(int amount = 0)
