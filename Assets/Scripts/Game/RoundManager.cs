@@ -8,6 +8,7 @@ public class RoundManager : MonoBehaviour
 
     int _currentRound = 1;
     int _amountOfRounds = 3;
+    int _swapBlockStartRound = 5;
 
     public void SetSettings(SequenceGameSettings gameSettings)
     {
@@ -28,9 +29,23 @@ public class RoundManager : MonoBehaviour
         _currentRound++;
     }
 
+    /// <summary>
+    /// Is it time to introduce the swapping block mechanic
+    /// </summary>
+    /// <returns></returns>
+    public bool SwapBlockRound()
+    {
+        if (_currentRound >= _swapBlockStartRound)
+        {
+            return true;
+        }
+        return false;
+    }
+
     void ResetGame()
     {
         _currentRound = 1;
         _amountOfRounds = _gameSettings.AmountOfRounds;
+        _swapBlockStartRound = _gameSettings.SwapBlockStartRound;
     }
 }

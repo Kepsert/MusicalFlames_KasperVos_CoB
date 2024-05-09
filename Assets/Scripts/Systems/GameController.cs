@@ -29,9 +29,13 @@ public class GameController : MonoBehaviour
 
         if (_testRun)
         {
-            MessageHub.Publish(new NewGameMessage());
-            SetGameState(GameState.Play);
+            Invoke("TestInitialization", 1f);
         }
+    }
+
+    void TestInitialization()
+    {
+        MessageHub.Publish(new NewGameMessage());
     }
 
     void OnDestroy()

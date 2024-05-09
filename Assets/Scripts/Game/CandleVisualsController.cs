@@ -14,9 +14,12 @@ public class CandleVisualsController : MonoBehaviour
     const float _DelayTime = .5f;
     const float _candleLitUpTime = 0.3f;
 
-    public void ShowSequence(List<int> sequence)
+    public float ShowSequence(List<int> sequence)
     {
         StartCoroutine(ShowSequenceCoroutine(sequence));
+
+        // Return the amount of time the full coroutine will take
+        return _initialWaitTime + ((_candleLitUpTime + _DelayTime) * sequence.Count);
     }
 
     IEnumerator ShowSequenceCoroutine(List<int> sequence)
@@ -33,8 +36,6 @@ public class CandleVisualsController : MonoBehaviour
             _candleRenderers[candle].enabled = false;
             yield return new WaitForSeconds(_DelayTime);
         }
-
-        MessageHub.Publish(new ChangeGameStateMessage(GameState.Play));
     }
 
     public float ShowSeparateCandle(int candleIndex)

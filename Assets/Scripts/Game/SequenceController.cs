@@ -9,10 +9,12 @@ public class SequenceController : MonoBehaviour
 {
     [SerializeField] CandleVisualsController _candleVisualsController = null;
     [SerializeField] RoundManager _roundManager = null;
+    [SerializeField] InputVisualsController _inputVisualsController = null;
 
     [SerializeField] SequenceGameSettings _gameSettings = null;
 
     SequenceHelper<int> _sequenceHelper;
+    InputValueHelper _inputValueHelper;
 
     List<int> _currentSequence = new List<int>();
 
@@ -29,6 +31,8 @@ public class SequenceController : MonoBehaviour
             _candleVisualsController = GetComponent<CandleVisualsController>();
         if (_roundManager == null)
             _roundManager = GetComponent<RoundManager>();
+        if (_inputVisualsController == null)
+            _inputVisualsController = GetComponent<InputVisualsController>();
     }
 
     void Start()
@@ -60,10 +64,12 @@ public class SequenceController : MonoBehaviour
 
     void GenerateSequence()
     {
+        _inputValueHelper = new InputValueHelper(_amountOfCandles);
+
         _sequenceHelper = new SequenceHelper<int>(_sequenceLength, _sequenceIncrement);
         _currentSequence = _sequenceHelper.GenerateSequence(() => UnityEngine.Random.Range(1, _amountOfCandles + 1));
 
-        _candleVisualsController.ShowSequence(_currentSequence);
+        ShowSequence();
     }
 
     void AddToSequence(int amount = 0)
@@ -83,42 +89,77 @@ public class SequenceController : MonoBehaviour
         if (_candleLitTimer != null)
             Timer.Instance.RemoveTimer(_candleLitTimer);
 
-        float candleLitUpTime = _candleVisualsController.ShowSeparateCandle(input);
-        
-        if (_sequenceHelper.CheckSequenceInput(input))
+        int inputValue = _inputValueHelper.GetInputValue(input);
+
+        float candleLitUpTime = _candleVisualsController.ShowSeparateCandle(inputValue);
+
+        if (_sequenceHelper.CheckSequenceInput(inputValue))
         {
             if (_sequenceHelper.IsFinalSequenceInput())
             {
                 MessageHub.Publish(new ChangeGameStateMessage(GameState.Cutscene));
                 if (_roundManager.IsFinalRound())
                 {
+                    ToggleInputVisuals(false);
                     MessageHub.Publish(new ChangeGameStateMessage(GameState.Victory));
                     MessageHub.Publish(new EndGameMessage());
                 }
                 else
                 {
                     // Wait for the candle to be unlit (after player input) before moving on to the next round
-                    _candleLitTimer = Timer.Instance.AddTimer(candleLitUpTime, () => NextSequenceStep());
+                    _candleLitTimer = Timer.Instance.AddTimer(candleLitUpTime, () => NextRound());
                 }
             }
         }
         else
         {
             MessageHub.Publish(new ChangeGameStateMessage(GameState.Cutscene));
+            ToggleInputVisuals(false);
             _candleLitTimer = Timer.Instance.AddTimer(candleLitUpTime, () => RestartCurrentSequence());
         }
     }
 
-    void NextSequenceStep()
+    void NextRound()
     {
         AddToSequence();
         _roundManager.NextRound();
-        _candleVisualsController.ShowSequence(_currentSequence);
+        if (_roundManager.SwapBlockRound())
+        {
+            float swapInputValueDuration = _inputVisualsController.SwapInputVisuals(_amountOfCandles, _inputValueHelper);
+
+            // Wait for the input visuals to be swapped before moving on to the next sequence
+            Timer.Instance.AddTimer(swapInputValueDuration, () =>
+            {
+                ToggleInputVisuals(false);
+                ShowSequence();
+            });
+        }
+        else
+        {
+            ToggleInputVisuals(false);
+            ShowSequence();
+        }
     }
 
     void RestartCurrentSequence()
     {
         _sequenceHelper.ResetSequence();
-        _candleVisualsController.ShowSequence(_currentSequence);
+        ShowSequence();
+    }
+
+    void ShowSequence()
+    {
+        float showSequenceDuration = _candleVisualsController.ShowSequence(_currentSequence);
+
+        // When sequence has been shown, bring up the input visuals
+        Timer.Instance.AddTimer(showSequenceDuration, () =>
+        {
+            ToggleInputVisuals(true);
+        });
+    }
+
+    void ToggleInputVisuals(bool toggle)
+    {
+        _inputVisualsController.ToggleVisualObject(toggle);
     }
 }

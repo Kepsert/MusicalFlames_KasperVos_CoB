@@ -9,4 +9,6 @@ public class SequenceGameSettings : ScriptableObject
     public int StartSequenceLength { get { return _startSequenceLength; } }
     [SerializeField, Min(1)] int _sequenceIncrementPerRound = 1;
     public int SequenceIncrementPerRound { get { return _sequenceIncrementPerRound; } }
+    [SerializeField, Min(1)] int _swapBlockStartRound = 2;
+    public int SwapBlockStartRound { get { return _swapBlockStartRound; } }
 }
