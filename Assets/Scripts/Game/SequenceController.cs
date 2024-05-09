@@ -50,6 +50,9 @@ public class SequenceController : MonoBehaviour
 
     void NewGameStarted(NewGameMessage obj)
     {
+        if (obj.SequenceGameSettings != null)
+            _gameSettings = obj.SequenceGameSettings;
+
         _currentSequence.Clear();
 
         Init();

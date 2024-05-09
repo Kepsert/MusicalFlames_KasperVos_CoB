@@ -2,9 +2,10 @@ namespace Messaging.Messages
 {
     public class NewGameMessage : MessageBase
     {
-        public NewGameMessage()
+        public SequenceGameSettings SequenceGameSettings;
+        public NewGameMessage(SequenceGameSettings sequenceGameSettings = null)
         {
-
+            SequenceGameSettings = sequenceGameSettings;
         }
     }
 }

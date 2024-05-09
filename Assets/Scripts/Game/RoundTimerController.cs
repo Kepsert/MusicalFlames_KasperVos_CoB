@@ -49,6 +49,8 @@ public class RoundTimerController : MonoBehaviour
     {
         _timerRunning = false;
         _roundTimer.Reset();
+        if (_roundTimerUI != null)
+            _roundTimerUI.UpdateValue(1);
     }
 
     void GameStateChanged(GameStateChangedMessage obj)
@@ -65,10 +67,8 @@ public class RoundTimerController : MonoBehaviour
 
     private void InjectUIClass(InjectUIMessage obj)
     {
-        Debug.Log("Checking Injection");
         if (obj.Object is IUpdateable<float> iUpdateable)
         {
-            Debug.Log("Grabbing IUpdateable");
             _roundTimerUI = iUpdateable;
         }
     }
