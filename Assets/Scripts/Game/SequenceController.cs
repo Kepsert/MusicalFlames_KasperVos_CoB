@@ -25,6 +25,7 @@ public class SequenceController : MonoBehaviour
     int _sequenceIncrement = 1;
 
     Guid _candleLitTimer;
+    Guid _showSequenceTimer;
 
     private void Awake()
     {
@@ -41,11 +42,13 @@ public class SequenceController : MonoBehaviour
     void Start()
     {
         MessageHub.Subscribe<NewGameMessage>(this, NewGameStarted);
+        MessageHub.Subscribe<EndGameMessage>(this, GameEnded);
     }
 
     void OnDestroy()
     {
         MessageHub.Unsubscribe<NewGameMessage>(this);
+        MessageHub.Unsubscribe<EndGameMessage>(this);
     }
 
     void NewGameStarted(NewGameMessage obj)
@@ -57,6 +60,13 @@ public class SequenceController : MonoBehaviour
 
         Init();
         GenerateSequence();
+    }
+
+    private void GameEnded(EndGameMessage obj)
+    {
+        if (_showSequenceTimer != null)
+            Timer.Instance.RemoveTimer(_showSequenceTimer);
+        _inputVisualsController.ToggleVisualObject(false);
     }
 
     public void Init()
@@ -157,7 +167,7 @@ public class SequenceController : MonoBehaviour
         float showSequenceDuration = _candleVisualsController.ShowSequence(_currentSequence);
 
         // When sequence has been shown, bring up the input visuals
-        Timer.Instance.AddTimer(showSequenceDuration, () =>
+        _showSequenceTimer = Timer.Instance.AddTimer(showSequenceDuration, () =>
         {
             ToggleInputVisuals(true);
         });

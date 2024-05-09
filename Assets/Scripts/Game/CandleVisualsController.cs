@@ -1,5 +1,6 @@
 using Messaging;
 using Messaging.Messages;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,14 +10,25 @@ public class CandleVisualsController : MonoBehaviour
     [SerializeField] List<SpriteRenderer> _candleRenderers = new List<SpriteRenderer>();
 
     Coroutine _seperateCandleCoroutine;
+    Coroutine _showSequenceCoroutine;
 
     const float _initialWaitTime = 1f;
     const float _DelayTime = .5f;
     const float _candleLitUpTime = 0.3f;
 
+    void Start()
+    {
+        MessageHub.Subscribe<EndGameMessage>(this, GameEnded);
+    }
+
+    void OnDestroy()
+    {
+        MessageHub.Unsubscribe<EndGameMessage>(this);
+    }
+
     public float ShowSequence(List<int> sequence)
     {
-        StartCoroutine(ShowSequenceCoroutine(sequence));
+        _showSequenceCoroutine = StartCoroutine(ShowSequenceCoroutine(sequence));
 
         // Return the amount of time the full coroutine will take
         return _initialWaitTime + ((_candleLitUpTime + _DelayTime) * sequence.Count);
@@ -63,5 +75,11 @@ public class CandleVisualsController : MonoBehaviour
         {
             renderer.enabled = false;
         }
+    }
+
+    void GameEnded(EndGameMessage obj)
+    {
+        StopCoroutine(_showSequenceCoroutine);
+        ClearCandles();
     }
 }
