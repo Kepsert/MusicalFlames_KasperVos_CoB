@@ -10,6 +10,7 @@ public class SequenceController : MonoBehaviour
     [SerializeField] CandleVisualsController _candleVisualsController = null;
     [SerializeField] RoundManager _roundManager = null;
     [SerializeField] InputVisualsController _inputVisualsController = null;
+    [SerializeField] RoundTimerController _roundTimerController = null;
 
     [SerializeField] SequenceGameSettings _gameSettings = null;
 
@@ -33,6 +34,8 @@ public class SequenceController : MonoBehaviour
             _roundManager = GetComponent<RoundManager>();
         if (_inputVisualsController == null)
             _inputVisualsController = GetComponent<InputVisualsController>();
+        if (_roundTimerController == null)
+            _roundTimerController = GetComponent<RoundTimerController>();
     }
 
     void Start()
@@ -57,6 +60,7 @@ public class SequenceController : MonoBehaviour
     {
         _sequenceLength = _gameSettings.StartSequenceLength;
         _sequenceIncrement = _gameSettings.SequenceIncrementPerRound;
+        _roundTimerController.GameStarted(_gameSettings.RoundTimer);
 
         // Set up RoundManager
         _roundManager.SetSettings(_gameSettings);
@@ -100,9 +104,7 @@ public class SequenceController : MonoBehaviour
                 MessageHub.Publish(new ChangeGameStateMessage(GameState.Cutscene));
                 if (_roundManager.IsFinalRound())
                 {
-                    ToggleInputVisuals(false);
-                    MessageHub.Publish(new ChangeGameStateMessage(GameState.Victory));
-                    MessageHub.Publish(new EndGameMessage());
+                    InitiateVictory();
                 }
                 else
                 {
@@ -161,5 +163,12 @@ public class SequenceController : MonoBehaviour
     void ToggleInputVisuals(bool toggle)
     {
         _inputVisualsController.ToggleVisualObject(toggle);
+    }
+
+    void InitiateVictory()
+    {
+        ToggleInputVisuals(false);
+        MessageHub.Publish(new ChangeGameStateMessage(GameState.Victory));
+        MessageHub.Publish(new EndGameMessage());
     }
 }
