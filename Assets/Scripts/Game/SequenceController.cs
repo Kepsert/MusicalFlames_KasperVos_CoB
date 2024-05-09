@@ -1,8 +1,5 @@
 using Messaging;
 using Messaging.Messages;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SequenceController : MonoBehaviour
