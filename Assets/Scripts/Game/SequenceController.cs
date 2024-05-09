@@ -97,6 +97,7 @@ public class SequenceController : MonoBehaviour
         else
         {
             _sequenceHelper.ResetSequence();
+            _candleVisualsController.ShowSequence(_currentSequence);
         }
     }
 

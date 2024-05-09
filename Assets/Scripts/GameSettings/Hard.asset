@@ -13,7 +13,5 @@ MonoBehaviour:
   m_Name: Hard
   m_EditorClassIdentifier: 
   _amountOfRounds: 4
-  _startSequenceAmount: 4
+  _startSequenceLength: 4
   _sequenceIncrementPerRound: 1
-  _swapBlockStartRound: 2
-  _roundTimer: 10

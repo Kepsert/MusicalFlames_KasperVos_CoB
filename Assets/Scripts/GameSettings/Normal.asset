@@ -13,7 +13,5 @@ MonoBehaviour:
   m_Name: Normal
   m_EditorClassIdentifier: 
   _amountOfRounds: 3
-  _startSequenceAmount: 3
+  _startSequenceLength: 3
   _sequenceIncrementPerRound: 1
-  _swapBlockStartRound: 2
-  _roundTimer: 15
