@@ -1,0 +1,95 @@
+{
+    "name": "GameInput",
+    "maps": [
+        {
+            "name": "SequenceMinigame",
+            "id": "5fe57e29-f7dd-4019-bcca-c8b6013c071f",
+            "actions": [
+                {
+                    "name": "ToggleCandle",
+                    "type": "Button",
+                    "id": "57e6b3af-2e56-4c56-bdce-449e24fc39f0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3a7ea750-46fe-4613-baa8-f4b5a4b17a40",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": "KBM",
+                    "action": "ToggleCandle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c47b77f2-e9d4-47ac-99be-9fa6f10221a1",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "Scale(factor=2)",
+                    "groups": "KBM",
+                    "action": "ToggleCandle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "75f5a553-6119-4203-8679-23bfb714a388",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "Scale(factor=3)",
+                    "groups": "KBM",
+                    "action": "ToggleCandle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a7a2f5e-7429-4cbc-8610-37b462d6c66b",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "Scale(factor=4)",
+                    "groups": "KBM",
+                    "action": "ToggleCandle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39e5d47c-d71b-4e0c-9ecc-75ead6c9017e",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "Scale(factor=5)",
+                    "groups": "KBM",
+                    "action": "ToggleCandle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "KBM",
+            "bindingGroup": "KBM",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
