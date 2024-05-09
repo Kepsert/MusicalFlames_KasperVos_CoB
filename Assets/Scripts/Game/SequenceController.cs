@@ -59,15 +59,12 @@ public class SequenceController : MonoBehaviour
     {
         if (_sequenceHelper.CheckSequenceInput(input))
         {
-            Debug.Log("Correct Input");
             if (_sequenceHelper.IsFinalSequenceInput())
             {
-                Debug.Log("Sequence Ended");
             }
         }
         else
         {
-            Debug.Log("Incorrect Input");
             _sequenceHelper.ResetSequence();
         }
     }
