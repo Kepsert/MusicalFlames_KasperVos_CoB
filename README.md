@@ -19,3 +19,5 @@ Audio:
 NOTES:
 - Clocked working time on approximately 5~ hours
 - Art assets mostly prepared prior to doing the actual challenge
+- Due to scope/time constraints I did not work with branch systems in version control, nor did I manage to implement everything I came up with right off the bat
+- Alternative mobile mechanic inputs have been designed, not implemented
