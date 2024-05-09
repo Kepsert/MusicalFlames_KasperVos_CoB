@@ -439,6 +439,7 @@ MonoBehaviour:
   _candleVisualsController: {fileID: 8510568558880704379}
   _roundManager: {fileID: 8142790585455661988}
   _inputVisualsController: {fileID: 5931026191199045397}
+  _roundTimerController: {fileID: 2959226563633942478}
   _gameSettings: {fileID: 11400000, guid: eb1c0130aa915244ab470fd0796268af, type: 2}
 --- !u!114 &8510568558880704379
 MonoBehaviour:

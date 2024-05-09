@@ -18,7 +18,7 @@ public class RoundTimer : ITimer
 
     public void Reset()
     {
-        _elapsedTime = 0;
+        _elapsedTime = 0.01f;
     }
 
     public void Refresh()

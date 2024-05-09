@@ -11,6 +11,10 @@ public class MainMenuController : MonoBehaviour
     {
         _mainMenuPanel.SetActive(false);
         SequenceGameSettings gameSettings = _gameSettings[buttonIndex];
+
+        if (buttonIndex == 3)
+            MessageHub.Publish(new GameModeChangedMessage(GameMode.Endless));
+
         if (gameSettings != null)
         {
             MessageHub.Publish(new NewGameMessage(gameSettings));

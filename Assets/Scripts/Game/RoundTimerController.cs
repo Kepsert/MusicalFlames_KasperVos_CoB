@@ -1,5 +1,6 @@
 using Messaging;
 using Messaging.Messages;
+using System;
 using UnityEngine;
 
 public class RoundTimerController : MonoBehaviour
@@ -16,6 +17,8 @@ public class RoundTimerController : MonoBehaviour
         MessageHub.Subscribe<EndGameMessage>(this, GameEnded);
         MessageHub.Subscribe<GameStateChangedMessage>(this, GameStateChanged);
 
+        MessageHub.Subscribe<RoundEndedMessage>(this, RoundEnded);
+
         MessageHub.Subscribe<InjectUIMessage>(this, InjectUIClass);
     }
 
@@ -23,6 +26,8 @@ public class RoundTimerController : MonoBehaviour
     {
         MessageHub.Unsubscribe<EndGameMessage>(this);
         MessageHub.Unsubscribe<GameStateChangedMessage>(this);
+
+        MessageHub.Unsubscribe<RoundEndedMessage>(this);
 
         MessageHub.Subscribe<InjectUIMessage>(this, InjectUIClass);
     }
@@ -50,7 +55,7 @@ public class RoundTimerController : MonoBehaviour
         _timerRunning = false;
         _roundTimer.Reset();
         if (_roundTimerUI != null)
-            _roundTimerUI.UpdateValue(1);
+            _roundTimerUI.UpdateValue(0);
     }
 
     void GameStateChanged(GameStateChangedMessage obj)
@@ -71,5 +76,12 @@ public class RoundTimerController : MonoBehaviour
         {
             _roundTimerUI = iUpdateable;
         }
+    }
+
+    private void RoundEnded(RoundEndedMessage obj)
+    {
+        _roundTimer.Reset();
+        if (_roundTimerUI != null)
+            _roundTimerUI.UpdateValue(0);
     }
 }

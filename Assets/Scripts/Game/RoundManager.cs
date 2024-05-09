@@ -10,9 +10,12 @@ public class RoundManager : MonoBehaviour
     int _amountOfRounds = 3;
     int _swapBlockStartRound = 5;
 
-    public void SetSettings(SequenceGameSettings gameSettings)
+    bool _endlessMode = false;
+
+    public void SetSettings(SequenceGameSettings gameSettings, bool endlessMode)
     {
         _gameSettings = gameSettings;
+        _endlessMode = endlessMode;
         ResetGame();
     }
 
@@ -27,6 +30,8 @@ public class RoundManager : MonoBehaviour
     public void NextRound()
     {
         _currentRound++;
+        if (_endlessMode)
+            MessageHub.Publish(new RoundEndedMessage());
     }
 
     /// <summary>

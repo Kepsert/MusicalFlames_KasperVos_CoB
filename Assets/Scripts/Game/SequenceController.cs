@@ -27,6 +27,8 @@ public class SequenceController : MonoBehaviour
     Guid _candleLitTimer;
     Guid _showSequenceTimer;
 
+    bool _endlessMode;
+
     private void Awake()
     {
         if (_candleVisualsController == null)
@@ -43,12 +45,14 @@ public class SequenceController : MonoBehaviour
     {
         MessageHub.Subscribe<NewGameMessage>(this, NewGameStarted);
         MessageHub.Subscribe<EndGameMessage>(this, GameEnded);
+        MessageHub.Subscribe<GameModeChangedMessage>(this, ChangedGameMode);
     }
 
     void OnDestroy()
     {
         MessageHub.Unsubscribe<NewGameMessage>(this);
         MessageHub.Unsubscribe<EndGameMessage>(this);
+        MessageHub.Unsubscribe<GameModeChangedMessage>(this);
     }
 
     void NewGameStarted(NewGameMessage obj)
@@ -76,7 +80,7 @@ public class SequenceController : MonoBehaviour
         _roundTimerController.GameStarted(_gameSettings.RoundTimer);
 
         // Set up RoundManager
-        _roundManager.SetSettings(_gameSettings);
+        _roundManager.SetSettings(_gameSettings, _endlessMode);
     }
 
     void GenerateSequence()
@@ -115,7 +119,7 @@ public class SequenceController : MonoBehaviour
             if (_sequenceHelper.IsFinalSequenceInput())
             {
                 MessageHub.Publish(new ChangeGameStateMessage(GameState.Cutscene));
-                if (_roundManager.IsFinalRound())
+                if (_roundManager.IsFinalRound() && !_endlessMode)
                 {
                     InitiateVictory();
                 }
@@ -183,5 +187,10 @@ public class SequenceController : MonoBehaviour
         ToggleInputVisuals(false);
         MessageHub.Publish(new ChangeGameStateMessage(GameState.Victory));
         MessageHub.Publish(new EndGameMessage());
+    }
+
+    private void ChangedGameMode(GameModeChangedMessage obj)
+    {
+        _endlessMode = obj.GameMode == GameMode.Endless ? true : false;
     }
 }
