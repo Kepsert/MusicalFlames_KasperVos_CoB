@@ -6,6 +6,7 @@ using UnityEngine;
 public class SequenceController : MonoBehaviour
 {
     [SerializeField] CandleVisualsController _candleVisualsController = null;
+    [SerializeField] RoundManager _roundManager = null;
 
     SequenceHelper<int> _sequenceHelper;
 
@@ -13,15 +14,15 @@ public class SequenceController : MonoBehaviour
 
     const int _amountOfCandles = 5;
 
-    int _currentRound = 1;
     int _sequenceLength = 3;
     int _sequenceIncrement = 1;
-    int _amountOfRounds = 4;
 
     private void Awake()
     {
         if (_candleVisualsController == null)
             _candleVisualsController = GetComponent<CandleVisualsController>();
+        if (_roundManager == null)
+            _roundManager = GetComponent<RoundManager>();
     }
 
     void Start()
@@ -44,10 +45,8 @@ public class SequenceController : MonoBehaviour
 
     public void Init()
     {
-        _currentRound = 1;
         _sequenceLength = 3;
         _sequenceIncrement = 1;
-        _amountOfRounds = 4;
     }
 
     void GenerateSequence()
@@ -62,7 +61,7 @@ public class SequenceController : MonoBehaviour
     {
         if (_sequenceHelper != null)
         {
-            _sequenceHelper.AddToSequence(() => UnityEngine.Random.Range(1, _amountOfCandles + 1));
+            _currentSequence = _sequenceHelper.AddToSequence(() => UnityEngine.Random.Range(1, _amountOfCandles + 1));
         }
         else
         {
@@ -74,13 +73,31 @@ public class SequenceController : MonoBehaviour
     {
         if (_sequenceHelper.CheckSequenceInput(input))
         {
+            _candleVisualsController.ShowSeparateCandle(input);
+
             if (_sequenceHelper.IsFinalSequenceInput())
             {
+                if (_roundManager.IsFinalRound())
+                {
+                    MessageHub.Publish(new ChangeGameStateMessage(GameState.Victory));
+                    MessageHub.Publish(new EndGameMessage());
+                }
+                else
+                {
+                    _roundManager.NextRound();
+                    ContinueSequence();
+                }
             }
         }
         else
         {
             _sequenceHelper.ResetSequence();
         }
+    }
+
+    void ContinueSequence()
+    {
+        AddToSequence();
+        _candleVisualsController.ShowSequence(_currentSequence);
     }
 }
