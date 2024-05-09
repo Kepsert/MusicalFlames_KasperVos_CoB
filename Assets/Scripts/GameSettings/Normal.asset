@@ -16,4 +16,4 @@ MonoBehaviour:
   _startSequenceLength: 2
   _sequenceIncrementPerRound: 1
   _swapBlockStartRound: 3
-  _roundTimer: 30
+  _roundTimer: 20
