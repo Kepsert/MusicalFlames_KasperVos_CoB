@@ -12,6 +12,8 @@ public class RoundTimerUI : MonoBehaviour, IUpdateable<float>
     const float _animationDuration = .75f;
     const float _moveDistance = 150;
 
+    Coroutine _resetValueOverTime;
+
     void Start()
     {
         MessageHub.Subscribe<NewGameMessage>(this, NewGameStarted);
@@ -55,5 +57,28 @@ public class RoundTimerUI : MonoBehaviour, IUpdateable<float>
     public void UpdateValue(float value)
     {
         _slider.value = 1 - value;
+    }
+
+    public void RefreshOverTime(float duration)
+    {
+        _resetValueOverTime = StartCoroutine(ResetValueCoroutine(duration));
+    }
+
+    IEnumerator ResetValueCoroutine(float duration)
+    {
+        float timer = 0f;
+        float startValue = _slider.value;
+        float endValue = 1f;
+
+        while (timer < duration)
+        {
+            _slider.value = Mathf.Lerp(startValue, endValue, timer / duration);
+
+            timer += Time.deltaTime;
+
+            yield return null;
+        }
+
+        _slider.value = endValue;
     }
 }

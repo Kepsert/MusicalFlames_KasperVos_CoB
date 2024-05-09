@@ -82,6 +82,6 @@ public class RoundTimerController : MonoBehaviour
     {
         _roundTimer.Reset();
         if (_roundTimerUI != null)
-            _roundTimerUI.UpdateValue(0);
+            _roundTimerUI.RefreshOverTime(1);
     }
 }
