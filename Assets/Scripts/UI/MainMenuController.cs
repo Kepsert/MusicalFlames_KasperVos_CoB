@@ -25,6 +25,6 @@ public class MainMenuController : MonoBehaviour
 
     public void PlaySound()
     {
-
+        MessageHub.Publish(new PlaySFXMessage("Button"));
     }
 }

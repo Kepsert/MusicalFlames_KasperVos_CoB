@@ -40,12 +40,14 @@ public class EndGameUIController : MonoBehaviour
             _endGameImage.sprite = _endGameSprites[1];
             _endGameText.text = "Good Job!";
             _endGameButtonText.text = "Play Again";
+            MessageHub.Publish(new PlaySFXMessage("Success"));
         }
         else
         {
             _endGameImage.sprite = _endGameSprites[0];
             _endGameText.text = "Failed!";
             _endGameButtonText.text = "Try Again";
+            MessageHub.Publish(new PlaySFXMessage("Fail"));
         }
     }
 

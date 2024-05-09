@@ -35,6 +35,7 @@ public class InputVisualsController : MonoBehaviour, IVisualsToggable
     IEnumerator AnimateInputVisualsToggle(bool toggle)
     {
         Vector3 moveDistance = toggle ? new Vector3(0, 3.5f, 0) : new Vector3(0, -3.5f, 0);
+        MessageHub.Publish(new PlaySFXMessage("Woosh", 1*0.95f));
         foreach (Transform visual in _inputVisualsList)
         {
             Vector3 endPosition = visual.transform.position + moveDistance;
@@ -73,6 +74,7 @@ public class InputVisualsController : MonoBehaviour, IVisualsToggable
             Vector2 moveDownPosition = visual.transform.position - moveDistance;
             visual.transform.DOMove(moveDownPosition, _inputVisualsStepDuration * 0.95f).SetEase(Ease.OutBounce);
         }
+        MessageHub.Publish(new PlaySFXMessage("Woosh", 1 * 0.95f));
         yield return new WaitForSeconds(_inputVisualsStepDuration);
 
         // Swap visuals' positions
@@ -81,6 +83,7 @@ public class InputVisualsController : MonoBehaviour, IVisualsToggable
 
         visuals[0].DOMove(item2Position, _inputVisualsStepDuration * 0.95f).SetEase(Ease.OutBounce);
         visuals[1].DOMove(item1Position, _inputVisualsStepDuration * 0.95f).SetEase(Ease.OutBounce);
+        MessageHub.Publish(new PlaySFXMessage("Woosh", 1f));
         yield return new WaitForSeconds(_inputVisualsStepDuration);
 
         // Move visuals back to line
@@ -89,6 +92,7 @@ public class InputVisualsController : MonoBehaviour, IVisualsToggable
             Vector2 moveUpPosition = visual.transform.position + moveDistance;
             visual.transform.DOMove(moveUpPosition, _inputVisualsStepDuration * 0.95f).SetEase(Ease.OutBounce);
         }
+        MessageHub.Publish(new PlaySFXMessage("Woosh", 1 * 1.05f));
         yield return new WaitForSeconds(_inputVisualsStepDuration * 1.5f);
     }
 

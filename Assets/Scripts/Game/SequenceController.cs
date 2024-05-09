@@ -116,6 +116,9 @@ public class SequenceController : MonoBehaviour
 
         if (_sequenceHelper.CheckSequenceInput(inputValue))
         {
+            float pitch = (1 - .15f) + (float)inputValue * 0.05f;
+            MessageHub.Publish(new PlaySFXMessage("Ring", pitch));
+
             if (_sequenceHelper.IsFinalSequenceInput())
             {
                 MessageHub.Publish(new ChangeGameStateMessage(GameState.Cutscene));
@@ -132,6 +135,9 @@ public class SequenceController : MonoBehaviour
         }
         else
         {
+            float pitch = (1 - .35f) - (float)inputValue * 0.05f;
+            MessageHub.Publish(new PlaySFXMessage("Ring", pitch));
+
             MessageHub.Publish(new ChangeGameStateMessage(GameState.Cutscene));
             ToggleInputVisuals(false);
             _candleLitTimer = Timer.Instance.AddTimer(candleLitUpTime, () => RestartCurrentSequence());

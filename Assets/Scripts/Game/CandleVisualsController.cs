@@ -43,6 +43,10 @@ public class CandleVisualsController : MonoBehaviour
         for (int i = 0; i < sequence.Count; i++)
         {
             int candle = sequence[i] - 1;
+
+            float pitch = (1 - .1f) + (float)candle * 0.05f;
+            MessageHub.Publish(new PlaySFXMessage("Ring", pitch));
+
             _candleRenderers[candle].enabled = true;
             yield return new WaitForSeconds(_candleLitUpTime);
             _candleRenderers[candle].enabled = false;
